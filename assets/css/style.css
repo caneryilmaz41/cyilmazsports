@@ -259,14 +259,17 @@ body.active { overflow: hidden; }
 
 .movies-list {
   display: grid;
-  gap: 50px;
+  
 }
 
 .movie-card {
+  
+  width: 75%;
   height: 100%;
   display: flex;
   flex-direction: column;
   justify-content: space-between;
+  
 }
 
 .movie-card .card-banner {
@@ -351,7 +354,7 @@ body.active { overflow: hidden; }
 .movies-list.has-scrollbar {
   display: flex;
   justify-content: flex-start;
-  gap: 30px;
+  
   overflow-x: auto;
   scroll-snap-type: inline mandatory;
   padding-bottom: 25px;
@@ -963,6 +966,39 @@ body.active { overflow: hidden; }
 @media only screen and (max-width: 480px) {
 .movie-detail iframe {
   height: 200px; /* istediğiniz yüksekliği ayarlayabilirsiniz */
+}
+@media only screen and (max-width: 768px) {
+  .movies-list {
+    display: grid;
+    gap: 0;
+  }
+  
+  .movie-card {
+    
+    width: 50%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    
+  }
+  .movie-detail-banner button.play-btn {
+      position: absolute;
+      height: 50px;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+  }
+
+  .movie-detail-banner img {
+      max-width: 100%;
+      height: auto;
+  }
+
+  .movie-detail iframe {
+      width: 100%;
+      height: 300px; /* istediğiniz yüksekliği ayarlayabilirsiniz */
+  }
 }
 
 }
