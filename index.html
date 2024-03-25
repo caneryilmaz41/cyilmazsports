@@ -8,6 +8,7 @@
 <link href="https://cdnjs.cloudflare.com/ajax/libs/video.js/7.14.3/video-js.min.css" rel="stylesheet">
 <link rel="dns-prefetch" href="https://fonts.googleapis.com/">
 <link rel="stylesheet" href="https://cdn.plyr.io/3.6.8/plyr.css">
+<link rel="stylesheet" href="https://cdn.plyr.io/3.6.4/plyr.css">
 
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/mediaelement/4.2.16/mediaelementplayer.min.css">
 <link rel="dns-prefetch" href="https://cdnjs.cloudflare.com/">
@@ -233,10 +234,8 @@ background: url(images/pageskin.jpg) #090911 no-repeat center top fixed;
 <div class="live-player" data-loadbalancer="1" data-loadbalancerdomain="osflare.work">
 <div class="player-attributes">
 <center>
-    <video id="my-video" class="video-js" controls preload="auto" width="640" height="264" data-setup='{}'>
-        <!-- Varsayılan olarak bir kanal belirtiyoruz -->
+    <video id="my-video" controls crossorigin playsinline>
         <source src="https://zirvehd.macbizde3.com/yayinzirve.m3u8" type="application/x-mpegURL">
-        <!-- Fallback for browsers that don't support HTML5 video -->
         <p class="vjs-no-js">
             Tarayıcınız HTML5 videoyu desteklemiyor. Lütfen güncel bir tarayıcı kullanın.
         </p>
@@ -498,34 +497,45 @@ src="https://zirvehd.macbizde3.com/yayinzirve.m3u8" allowfullscreen=""></iframe>
         <p>Bu sitenin altyapısı <a href="https://t.me/zirvehd"><b>Zirve Stream</b></a> tarafından sağlanmıştır.</p>
     </div>
 </footer>
+<script src="https://cdn.plyr.io/3.6.4/plyr.js"></script>
 <script>
-    document.getElementById('channelButton').addEventListener('click', function(event) {
-        event.preventDefault(); // varsayılan tıklama davranışını iptal et
+    document.addEventListener('DOMContentLoaded', () => {
+        const player = new Plyr('#my-video');
 
-        var channelId = this.getAttribute('data-channelid');
-        changeChannel(channelId);
-    });
+        // Kanal değiştirme fonksiyonu
+        function changeChannel(channelId) {
+            const baseUrl = "https://zirvehd.macbizde3.com/";
+            const kanalurl = {
+                1: "yayinzirve.m3u8",
+                2: "yayinb2.m3u8",
+                3: "yayinb3.m3u8"
+                // Diğer kanallar buraya eklenebilir...
+            };
 
-    function changeChannel(channelId) {
-        var baseUrl = "https://zirvehd.macbizde3.com/";
-        var kanalurl = {
-            1: "yayinzirve.m3u8",
-            2: "yayinb2.m3u8",
-            3: "yayinb3.m3u8",
-            // diğer kanallar buraya eklenebilir...
-        };
+            const streamURL = kanalurl[channelId];
 
-        var streamURL = kanalurl[channelId];
-
-        if (streamURL) {
-            var videoPlayer = document.getElementById('match-video');
-            videoPlayer.src = baseUrl + streamURL;
-            videoPlayer.load();
-            videoPlayer.play();
-        } else {
-            console.log("Belirtilen kanal bulunamadı.");
+            if (streamURL) {
+                player.source = {
+                    type: 'video',
+                    sources: [{
+                        src: baseUrl + streamURL,
+                        type: 'application/x-mpegURL'
+                    }]
+                };
+            } else {
+                console.log("Belirtilen kanal bulunamadı.");
+            }
         }
-    }
+
+        // Kanal değiştirme butonu
+        document.querySelectorAll('.single-match').forEach(button => {
+            button.addEventListener('click', function(event) {
+                event.preventDefault();
+                const channelId = this.getAttribute('data-channelid');
+                changeChannel(channelId);
+            });
+        });
+    });
 </script>
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script src="https://vjs.zencdn.net/7.14.3/video.min.js"></script>
