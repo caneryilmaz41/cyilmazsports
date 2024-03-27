@@ -5,9 +5,10 @@
 <meta http-equiv="X-UA-Compatible" content="ie=edge">
 <script src="https://cdnjs.cloudflare.com/ajax/libs/video.js/7.14.3/video.min.js"></script>
 <link href="https://cdnjs.cloudflare.com/ajax/libs/video.js/7.14.3/video-js.min.css" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/clappr/latest/clappr.min.js"></script>
 <link rel="dns-prefetch" href="https://fonts.googleapis.com/">
 <link rel="stylesheet" href="https://cdn.plyr.io/3.6.8/plyr.css">
-
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/mediaelement/4.2.16/mediaelementplayer.min.css">
 <link rel="dns-prefetch" href="https://cdnjs.cloudflare.com/">
 <title>caneryılmazsportshd | Canlı Maç izle,</title>
 <meta property="og:type" content="website">
@@ -40,7 +41,7 @@ searchUsers.addEventListener('keydown', function() {
     else {
       users[i].style['display'] = 'none';
     }
-  }
+  } 
 });
 </script>
 <link rel="stylesheet" href="css/all.min.css">
@@ -195,7 +196,7 @@ background: url(images/pageskin.jpg) #090911 no-repeat center top fixed;
 <div class="live-player" data-loadbalancer="1" data-loadbalancerdomain="osflare.work">
 <div class="player-attributes">
 <center>
-    <video id="videoPlayer" controls width="640" height="360"></video>
+    <div id="video_player" style="width: 640px; height: 264px;"></div>
 <!-- <iframe id="macth-video" name="macth-video" width="100%" height="450" scrolling="no" frameborder="0" 
 src="https://zirvehd.macbizde3.com/yayinzirve.m3u8" allowfullscreen=""></iframe></center> -->
 </div>
@@ -215,7 +216,7 @@ src="https://zirvehd.macbizde3.com/yayinzirve.m3u8" allowfullscreen=""></iframe>
 <div id="real-matches" class="real-matches">
 <div class="match-cover">
 <div class="match-tab-box" style="display: block;">
-    <a class="single-match show" onclick="changeChannel('beinsports1')" data-matchtype="Futbol">
+    <a class="single-match show" onclick="changeChannel('zirve')" data-matchtype="Futbol">
         <img src="images/tv.png" style="border-radius:0px !important;" width="20" height="20" loading="lazy">
         <div class="match-detail">
             <div class="event"><span class="live">Canlı</span></div>
@@ -224,7 +225,7 @@ src="https://zirvehd.macbizde3.com/yayinzirve.m3u8" allowfullscreen=""></iframe>
                 <div class="away" style="text-align:right;"><img src="images/beinsports1.png" style="border-radius:0px !important; margin-top:-10px;" width="100" loading="lazy"></div>
             </div>
         </div>
-    </a>           
+    </a>          
                        </a>
                         <a class="single-match show " onclick="changeChannel('b2')"  data-matchtype="Futbol" target="macth-video">
                         <img src="images/tv.png" style="border-radius:0px !important;" width="20" height="20" loading="lazy">
@@ -441,32 +442,7 @@ src="https://zirvehd.macbizde3.com/yayinzirve.m3u8" allowfullscreen=""></iframe>
         <p>Bu sitenin altyapısı <a href="https://t.me/zirvehd"><b>Zirve Stream</b></a> tarafından sağlanmıştır.</p>
     </div>
 </footer>
-<script>
-    document.getElementById('channelButton').addEventListener('click', function(event) {
-        event.preventDefault(); // varsayılan tıklama davranışını iptal et
 
-        var channelId = this.getAttribute('data-channelid');
-        changeChannel(channelId);
-    });
-    function changeChannel(channelId) {
-        var baseUrl = "https://zirvehd.macbizde3.com/";
-        var kanalurl = {
-            1: "yayinzirve.m3u8",
-            2: "yayinb2.m3u8",
-            3: "yayinb3.m3u8",
-            // diğer kanallar buraya eklenebilir...
-        };
-        var streamURL = kanalurl[channelId];
-        if (streamURL) {
-            var videoPlayer = document.getElementById('match-video');
-            videoPlayer.src = baseUrl + streamURL;
-            videoPlayer.load();
-            videoPlayer.play();
-        } else {
-            console.log("Belirtilen kanal bulunamadı.");
-        }
-    }
-</script>
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script src="https://vjs.zencdn.net/7.14.3/video.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/mediaelement/4.2.16/mediaelement-and-player.min.js"></script>
@@ -475,37 +451,20 @@ src="https://zirvehd.macbizde3.com/yayinzirve.m3u8" allowfullscreen=""></iframe>
         var player = new MediaElementPlayer('player');
     });
 </script>
-<script src="https://cdn.jsdelivr.net/npm/hls.js@latest"></script>
 <script>
-    var video = document.getElementById('videoPlayer');
-    var hls = new Hls();
-    var currentStreamUrl = 'https://zirvehd.macbizde3.com/yayinzirve.m3u8';
+    var player = new Clappr.Player({
+        source: "https://zirvehd.macbizde3.com/yayinzirve.m3u8",
+        parentId: "#video_player",
+        width: "100%",
+        height: "100%",
+        autoPlay: false
+    });
 
-    // Video.js ile benzer bir fonksiyon
     function changeChannel(channel) {
-        var newStreamUrl = 'https://zirvehd.macbizde3.com/yayin' + channel + '.m3u8';
-        if (Hls.isSupported()) {
-            if (hls) {
-                hls.destroy();
-            }
-            hls = new Hls();
-            hls.loadSource(newStreamUrl);
-            hls.attachMedia(video);
-            currentStreamUrl = newStreamUrl;
-            video.play();
-        } else if (video.canPlayType('application/vnd.apple.mpegurl')) {
-            video.src = newStreamUrl;
-            currentStreamUrl = newStreamUrl;
-            video.addEventListener('loadedmetadata', function() {
-                video.play();
-            });
-        }
+        var newSource = "https://zirvehd.macbizde3.com/yayin" + channel + ".m3u8";
+        player.configure({source: newSource});
+        player.play();
     }
-
-    // Sayfa yüklendiğinde varsayılan kanalı yükle
-    window.onload = function() {
-        changeChannel('zirve');
-    };
 </script>
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script src="https://cdn.plyr.io/3.6.8/plyr.polyfilled.js"></script>
